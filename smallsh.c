@@ -118,6 +118,7 @@ void reapBackground() {
     // WNOHANG makes sure the shell does not block if there are no completed children
     while ((pid = waitpid(-1, &status, WNOHANG)) > 0) {
 
+        if (backgroundOn) {
         printf("background pid %d is done: ", pid);
 
         // WIFEXITED checks if the child exited normally
@@ -131,9 +132,11 @@ void reapBackground() {
             printf("terminated by signal %d\n", WTERMSIG(status));
         }
         fflush(stdout);
+        }
 
         // remove PID from tracked background PIDs
         removeBgPid(pid);
+
     }
 }
 
@@ -204,7 +207,11 @@ void getInput(char* input[], char inFile[], char outFile[], int* background, int
     while (token) {
         // handle &
         if (strcmp(token, "&") == 0) {
-            *background = 1;
+
+            if (backgroundOn) {
+                // only set background if in background-allowed mode
+                *background = 1;
+            }
 
         // handle input redirection
         } else if (strcmp(token, "<") == 0) {
@@ -369,9 +376,14 @@ void execCommand(char* input[], char inFile[], char outFile[], int background) {
                 // WIFSIGNALED checks if the child was terminated by a signal
                 } else if (WIFSIGNALED(status)) {
                     lastWasSignaled = 1;
+
+                    // WTERMSIG gets the signal number that caused termination
                     lastTermSignal = WTERMSIG(status);
-                    printf("terminated by signal %d\n", lastTermSignal);
-                    fflush(stdout);
+                    
+                    if (lastTermSignal != SIGTSTP) {
+                        printf("terminated by signal %d\n", lastTermSignal);
+                        fflush(stdout);
+                    }
                 }
             }
             break;
