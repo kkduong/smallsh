@@ -127,7 +127,7 @@ void reapBackground() {
 
         // WIFSIGNALED checks if the child was terminated by a signal
         } else if (WIFSIGNALED(status)) {
-            // The child terminated bc of a signal
+            // the child terminated bc of a signal
             printf("terminated by signal %d\n", WTERMSIG(status));
         }
         fflush(stdout);
@@ -345,11 +345,11 @@ void execCommand(char* input[], char inFile[], char outFile[], int background) {
 
             if (background && backgroundOn) {
                 // background
-                // No waitpid() so the shell can continue running
-                // Track background PIDs to reap later
+                // no waitpid() so the shell can continue running
+                // track background PIDs to reap later
                 addBgPid(spawnpid);
 
-                // Inform user of background PID
+                // inform user of background PID
                 printf("background pid is %d\n", spawnpid);
                 fflush(stdout);
 
