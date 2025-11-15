@@ -9,7 +9,7 @@
  *   - built-in commands: cd, status, exit
  * 
  * Author: Kaelee Duong
- * Course: CS344 - Operating Systems
+ * Course: CS374 - Operating Systems
  ***********************************************************************/
 
 #include <sys/types.h>
