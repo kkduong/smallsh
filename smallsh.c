@@ -283,6 +283,7 @@ void execCommand(char* input[], char inFile[], char outFile[], int background) {
             // Input redirection using open() and dup2()
             if (inFile[0] != '\0') {
                 // open() opens a file descriptor for reading
+                // O_RDONLY: read only
                 int fd = open(inFile, O_RDONLY);
 
                 // Error handling for open()
@@ -307,6 +308,7 @@ void execCommand(char* input[], char inFile[], char outFile[], int background) {
             if (outFile[0] != '\0') {
 
                 // open() opens or creates a file descriptor for output
+                // O_WRONLY: write only, O_CREAT: create if it doesn't exist, O_TRUNC: truncate to 0 length if it does exist
                 // 0644 sets read+write for owner, read for group+others
                 int fd = open(outFile, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 
