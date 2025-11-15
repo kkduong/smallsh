@@ -78,6 +78,7 @@ void catchSIGTSTP(int signo) {
 
         // use write() instead of printf() to be reentrant
         write(1, msg, strlen(msg));
+        write(1, ": ", 2);
         backgroundOn = 0;
 
     // if foreground-only mode is on, turn it off
@@ -86,6 +87,7 @@ void catchSIGTSTP(int signo) {
 
         // use write() instead of printf() to be reentrant
         write(1, msg, strlen(msg));
+        write(1, ": ", 2);
         backgroundOn = 1;
     }
 }
@@ -379,11 +381,10 @@ void execCommand(char* input[], char inFile[], char outFile[], int background) {
 
                     // WTERMSIG gets the signal number that caused termination
                     lastTermSignal = WTERMSIG(status);
+
+                    printf("terminated by signal %d\n", lastTermSignal);
+                    fflush(stdout);
                     
-                    if (lastTermSignal != SIGTSTP) {
-                        printf("terminated by signal %d\n", lastTermSignal);
-                        fflush(stdout);
-                    }
                 }
             }
             break;
@@ -411,7 +412,7 @@ int main() {
     struct sigaction sa_tstp = {0};
     sa_tstp.sa_handler = catchSIGTSTP;
     sigfillset(&sa_tstp.sa_mask);
-    sa_tstp.sa_flags = 0;
+    sa_tstp.sa_flags = SA_RESTART;
     sigaction(SIGTSTP, &sa_tstp, NULL);
 
     while (1) {
