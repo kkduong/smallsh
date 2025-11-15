@@ -8,8 +8,8 @@
  *   - $$ expansion into the shell's PID
  *   - built-in commands: cd, status, exit
  * 
- * Author: Kaelee Duong
- * Course: CS374 - Operating Systems
+ * author: Kaelee Duong
+ * course: CS374 - operating systems I
  ***********************************************************************/
 
 #include <sys/types.h>
