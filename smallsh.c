@@ -177,7 +177,7 @@ void getInput(char* input[], char inFile[], char outFile[], int* background, int
         return;
     }
 
-    // Expand $$
+    // expand $$
     char expanded[CMDLENGTH] = "";
     char pidStr[20];
     sprintf(pidStr, "%d", pid);
@@ -195,7 +195,7 @@ void getInput(char* input[], char inFile[], char outFile[], int* background, int
     }
     strcpy(arr, expanded);
 
-    // Tokenize input string
+    // tokenize input string
     const char s[2] = " ";
     char* saveptr;
     char* token = strtok_r(arr, s, &saveptr);
@@ -245,7 +245,7 @@ void getInput(char* input[], char inFile[], char outFile[], int* background, int
  ************************************************************/
 void execCommand(char* input[], char inFile[], char outFile[], int background) {
 
-    // Fork a new process for the non – built-in command
+    // fork a new process for the non – built-in command
     // fork() creates a new process by duplicating the calling process (child process)
     // returns the child's PID which is what is used to track it
     pid_t spawnpid = fork();
@@ -270,7 +270,7 @@ void execCommand(char* input[], char inFile[], char outFile[], int background) {
             sa_ignore.sa_flags = 0;
             sigaction(SIGTSTP, &sa_ignore, NULL);
 
-            // Child process SIGINT handling
+            // child process SIGINT handling
             struct sigaction sa_int;
 
             // foreground processes: default SIGINT behavior
@@ -296,21 +296,21 @@ void execCommand(char* input[], char inFile[], char outFile[], int background) {
                 dup2(fd, 0); 
                 close(fd);
             
-            // No input file specified for background process
+            // no input file specified for background process
             } else if (background && backgroundOn) {
                 // background tasks default to /dev/null input
                 int fd = open("/dev/null", O_RDONLY);
                 if (fd != -1) { dup2(fd, 0); close(fd); }
             }
 
-            // Output redirection using open() and dup2()
+            // output redirection using open() and dup2()
             if (outFile[0] != '\0') {
 
                 // open() opens or creates a file descriptor for output
                 // 0644 sets read+write for owner, read for group+others
                 int fd = open(outFile, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 
-                // Error handling for open()
+                // error handling for open()
                 if (fd == -1) {
                     printf("%s: cannot open output file\n", outFile);
                     fflush(stdout);
@@ -358,7 +358,7 @@ void execCommand(char* input[], char inFile[], char outFile[], int background) {
                 // waitpid() waits for the child to terminate before moving to the next process 
                 waitpid(spawnpid, &status, 0);
 
-                // Update status info for "status" built-in
+                // update status info for "status" built-in
                 // WIFEXITED checks if the child exited normally 
                 if (WIFEXITED(status)) {
                     lastWasSignaled = 0;
@@ -434,7 +434,7 @@ int main() {
             }
         }
 
-        /* Built-in: status */
+        /* built-in: status */
         else if (strcmp(input[0], "status") == 0) {
             printStatus();
         }
