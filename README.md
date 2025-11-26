@@ -1,6 +1,6 @@
 ## smallsh
 
-`smallsh` is a minimal Unix-like shell implemented in C as part of **CS 344 – Operating Systems I** at Oregon State University.  
+`smallsh` is a simple Unix-like shell implemented in C as part of **CS 344 – Operating Systems I** at Oregon State University.  
 It supports command execution, I/O redirection, background/foreground processes, and signal handling using POSIX APIs.
 
 ---
