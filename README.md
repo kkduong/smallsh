@@ -47,10 +47,8 @@ It supports command execution, I/O redirection, background/foreground processes,
 
 A helper shell script is provided:
 
-```bash
-./compileall.sh
+  ./compileall.sh
 
 You can then run the smallsh with:
 
-```bash
-./smallsh
+  ./smallsh
